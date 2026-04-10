@@ -1,0 +1,81 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Detalle de Vehículo</h1>
+  
+  <div class="detail-card">
+    <div class="detail-row">
+      <div class="detail-label">Placa:</div>
+      <div class="detail-value"><%= vehiculo.placa %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Modelo:</div>
+      <div class="detail-value"><%= vehiculo.modelo %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Año:</div>
+      <div class="detail-value"><%= vehiculo.año %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Clase:</div>
+      <div class="detail-value"><%= vehiculo.clase %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Propietario:</div>
+      <div class="detail-value"><%= propietario ? propietario.nombres + ' ' + propietario.apellidos : vehiculo.ci_propietario %></div>
+    </div>
+    <% if (vehiculo.tipo) { %>
+    <div class="detail-row">
+      <div class="detail-label">Tipo:</div>
+      <div class="detail-value"><%= vehiculo.tipo.nombre %></div>
+    </div>
+    <% } %>
+    <% if (vehiculo.marca) { %>
+    <div class="detail-row">
+      <div class="detail-label">Marca:</div>
+      <div class="detail-value"><%= vehiculo.marca.nombre %></div>
+    </div>
+    <% } %>
+  </div>
+  
+  <h2>Citas Programadas</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Trámite</th>
+        <th>Centro</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (citas.length > 0) { %>
+        <% citas.forEach(function(cita) { %>
+          <tr>
+            <td><%= new Date(cita.fecha).toLocaleDateString() %></td>
+            <td><%= cita.hora %></td>
+            <td><%= cita.tramite.nombre %></td>
+            <td><%= cita.centro.nombre %></td>
+            <td><span class="badge badge-<%= cita.estado.nombre.toLowerCase() %>"><%= cita.estado.nombre %></span></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="5" class="text-center">No hay citas programadas</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <a href="/vehiculos/<%= vehiculo.placa %>/editar" class="btn btn-primary">Editar</a>
+    <form action="/vehiculos/<%= vehiculo.placa %>?_method=DELETE" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar vehículo?')">Eliminar</button>
+    </form>
+    <a href="/vehiculos" class="btn btn-secondary">Volver</a>
+  </div>
+</div>
+
+<%- include('../partials/footer'); %>

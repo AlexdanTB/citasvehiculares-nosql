@@ -1,0 +1,87 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Nueva Cita</h1>
+  
+  <form method="POST" action="/citas" class="form">
+    <div class="form-group">
+      <label for="ci_propietario">Cédula de Identidad (Propietario):</label>
+      <select id="ci_propietario" name="ci_propietario" required>
+        <option value="">Seleccione propietario</option>
+        <% propietarios.forEach(function(prop) { %>
+          <option value="<%= prop.ci %>"><%= prop.ci %> - <%= prop.nombres %> <%= prop.apellidos %></option>
+        <% }); %>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="placa">Placa del Vehículo:</label>
+      <div id="vehiculo-info"></div>
+      <input type="text" id="placa" name="placa" placeholder="Ej: ABC-1234" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" name="fecha" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="hora">Hora:</label>
+      <select id="hora" name="hora" required>
+        <option value="">Seleccione hora</option>
+        <option value="08:00">08:00</option>
+        <option value="08:30">08:30</option>
+        <option value="09:00">09:00</option>
+        <option value="09:30">09:30</option>
+        <option value="10:00">10:00</option>
+        <option value="10:30">10:30</option>
+        <option value="11:00">11:00</option>
+        <option value="11:30">11:30</option>
+        <option value="12:00">12:00</option>
+        <option value="12:30">12:30</option>
+        <option value="13:00">13:00</option>
+        <option value="13:30">13:30</option>
+        <option value="14:00">14:00</option>
+        <option value="14:30">14:30</option>
+        <option value="15:00">15:00</option>
+        <option value="15:30">15:30</option>
+        <option value="16:00">16:00</option>
+        <option value="16:30">16:30</option>
+        <option value="17:00">17:00</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="tramite_id">Trámite:</label>
+      <select id="tramite_id" name="tramite_id" required>
+        <option value="">Seleccione trámite</option>
+        <% tramites.forEach(function(tram) { %>
+          <option value="<%= tram._id %>"><%= tram.nombre %> - $<%= tram.costo %></option>
+        <% }); %>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="centro_id">Centro:</label>
+      <select id="centro_id" name="centro_id" required>
+        <option value="">Seleccione centro</option>
+        <% centros.forEach(function(centro) { %>
+          <option value="<%= centro._id %>"><%= centro.nombre %> - <%= centro.direccion %></option>
+        <% }); %>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="observaciones">Observaciones:</label>
+      <textarea id="observaciones" name="observaciones" rows="3"></textarea>
+    </div>
+    
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Agendar Cita</button>
+      <a href="/citas" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer'); %>

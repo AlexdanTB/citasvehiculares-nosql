@@ -1,0 +1,79 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Detalle de Propietario</h1>
+  
+  <div class="detail-card">
+    <div class="detail-row">
+      <div class="detail-label">CI:</div>
+      <div class="detail-value"><%= propietario.ci %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Nombres:</div>
+      <div class="detail-value"><%= propietario.nombres %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Apellidos:</div>
+      <div class="detail-value"><%= propietario.apellidos %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Email:</div>
+      <div class="detail-value"><%= propietario.email %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Teléfono Móvil:</div>
+      <div class="detail-value"><%= propietario.telefono_movil %></div>
+    </div>
+    <% if (propietario.telefono_convencional) { %>
+    <div class="detail-row">
+      <div class="detail-label">Teléfono Convencional:</div>
+      <div class="detail-value"><%= propietario.telefono_convencional %></div>
+    </div>
+    <% } %>
+    <div class="detail-row">
+      <div class="detail-label">Estado:</div>
+      <div class="detail-value"><%= propietario.activo ? 'Activo' : 'Inactivo' %></div>
+    </div>
+  </div>
+  
+  <h2>Vehículos</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Placa</th>
+        <th>Modelo</th>
+        <th>Año</th>
+        <th>Clase</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (vehiculos.length > 0) { %>
+        <% vehiculos.forEach(function(veh) { %>
+          <tr>
+            <td><%= veh.placa %></td>
+            <td><%= veh.modelo %></td>
+            <td><%= veh.año %></td>
+            <td><%= veh.clase %></td>
+            <td><a href="/vehiculos/<%= veh.placa %>" class="btn btn-sm">Ver</a></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="5" class="text-center">No tiene vehículos registrados</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <a href="/propietarios/<%= propietario.ci %>/editar" class="btn btn-primary">Editar</a>
+    <form action="/propietarios/<%= propietario.ci %>?_method=DELETE" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar propietario?')">Eliminar</button>
+    </form>
+    <a href="/propietarios" class="btn btn-secondary">Volver</a>
+  </div>
+</div>
+
+<%- include('../partials/footer'); %>

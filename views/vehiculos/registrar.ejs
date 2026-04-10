@@ -1,0 +1,58 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1><%= vehiculo ? 'Editar' : 'Registrar' %> Vehículo</h1>
+  
+  <form method="POST" action="<%= vehiculo ? '/vehiculos/' + vehiculo.placa + '?_method=PUT' : '/vehiculos' %>" class="form">
+    <div class="form-group">
+      <label for="placa">Placa:</label>
+      <input type="text" id="placa" name="placa" value="<%= vehiculo ? vehiculo.placa : '' %>" <%= vehiculo ? 'readonly' : '' %> required>
+    </div>
+    
+    <div class="form-group">
+      <label for="modelo">Modelo:</label>
+      <input type="text" id="modelo" name="modelo" value="<%= vehiculo ? vehiculo.modelo : '' %>" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="año">Año:</label>
+      <input type="number" id="año" name="año" value="<%= vehiculo ? vehiculo.año : '' %>" min="1900" max="2030" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="clase">Clase:</label>
+      <select id="clase" name="clase" required>
+        <option value="Particular" <%= vehiculo && vehiculo.clase === 'Particular' ? 'selected' : '' %>>Particular</option>
+        <option value="Comercial" <%= vehiculo && vehiculo.clase === 'Comercial' ? 'selected' : '' %>>Comercial</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="ci_propietario">Propietario:</label>
+      <select id="ci_propietario" name="ci_propietario" required>
+        <option value="">Seleccione propietario</option>
+        <% propietarios.forEach(function(prop) { %>
+          <option value="<%= prop.ci %>" <%= vehiculo && vehiculo.ci_propietario === prop.ci ? 'selected' : '' %>><%= prop.ci %> - <%= prop.nombres %> <%= prop.apellidos %></option>
+        <% }); %>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="tipo">Tipo:</label>
+      <input type="text" id="tipo" name="tipo" value="<%= vehiculo && vehiculo.tipo ? vehiculo.tipo.nombre : '' %>">
+    </div>
+    
+    <div class="form-group">
+      <label for="marca">Marca:</label>
+      <input type="text" id="marca" name="marca" value="<%= vehiculo && vehiculo.marca ? vehiculo.marca.nombre : '' %>">
+    </div>
+    
+    <div class="actions">
+      <button type="submit" class="btn btn-primary"><%= vehiculo ? 'Actualizar' : 'Registrar' %></button>
+      <a href="/vehiculos" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer'); %>

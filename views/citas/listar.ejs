@@ -1,0 +1,74 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Citas</h1>
+  
+  <div class="filters">
+    <form method="GET" action="/citas" class="filter-form">
+      <div class="form-group">
+        <label for="fecha">Filtrar por fecha:</label>
+        <input type="date" id="fecha" name="fecha" value="<%= fecha || '' %>">
+      </div>
+      <div class="form-group">
+        <label for="estado">Filtrar por estado:</label>
+        <select id="estado" name="estado">
+          <option value="">Todos</option>
+          <option value="Pendiente" <%= estado === 'Pendiente' ? 'selected' : '' %>>Pendiente</option>
+          <option value="Confirmada" <%= estado === 'Confirmada' ? 'selected' : '' %>>Confirmada</option>
+          <option value="Atendida" <%= estado === 'Atendida' ? 'selected' : '' %>>Atendida</option>
+          <option value="Cancelada" <%= estado === 'Cancelada' ? 'selected' : '' %>>Cancelada</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+      <a href="/citas" class="btn btn-secondary">Limpiar</a>
+    </form>
+  </div>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Vehículo</th>
+        <th>Trámite</th>
+        <th>Centro</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (citas.length > 0) { %>
+        <% citas.forEach(function(cita) { %>
+          <tr>
+            <td><%= new Date(cita.fecha).toLocaleDateString() %></td>
+            <td><%= cita.hora %></td>
+            <td><%= cita.vehiculo.placa %></td>
+            <td><%= cita.tramite.nombre %></td>
+            <td><%= cita.centro.nombre %></td>
+            <td><span class="badge badge-<%= cita.estado.nombre.toLowerCase() %>"><%= cita.estado.nombre %></span></td>
+            <td>
+              <a href="/citas/<%= cita._id %>" class="btn btn-sm">Ver</a>
+              <% if (cita.estado.nombre === 'Pendiente') { %>
+                <form action="/citas/<%= cita._id %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Cancelar cita?')">Cancelar</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="7" class="text-center">No hay citas registradas</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <a href="/citas/nueva" class="btn btn-primary">Nueva Cita</a>
+    <a href="/citas/hoy" class="btn btn-secondary">Citas de Hoy</a>
+  </div>
+</div>
+
+<%- include('../partials/footer'); %>

@@ -1,0 +1,74 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Detalle de Cita</h1>
+  
+  <div class="detail-card">
+    <div class="detail-row">
+      <div class="detail-label">Fecha:</div>
+      <div class="detail-value"><%= new Date(cita.fecha).toLocaleDateString() %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Hora:</div>
+      <div class="detail-value"><%= cita.hora %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Vehículo:</div>
+      <div class="detail-value"><%= cita.vehiculo.placa %> - <%= cita.vehiculo.modelo %> (<%= cita.vehiculo.año %>)</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Propietario:</div>
+      <div class="detail-value"><%= cita.vehiculo.propietario.nombres %> <%= cita.vehiculo.propietario.apellidos %> (CI: <%= cita.vehiculo.propietario.ci %>)</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Trámite:</div>
+      <div class="detail-value"><%= cita.tramite.nombre %> - $<%= cita.tramite.costo %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Centro:</div>
+      <div class="detail-value"><%= cita.centro.nombre %> - <%= cita.centro.direccion %></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Estado:</div>
+      <div class="detail-value"><span class="badge badge-<%= cita.estado.nombre.toLowerCase() %>"><%= cita.estado.nombre %></span></div>
+    </div>
+    <% if (cita.observaciones) { %>
+    <div class="detail-row">
+      <div class="detail-label">Observaciones:</div>
+      <div class="detail-value"><%= cita.observaciones %></div>
+    </div>
+    <% } %>
+  </div>
+  
+  <h2>Historial de Estados</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Observación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% cita.historial_estados.forEach(function(hist) { %>
+        <tr>
+          <td><%= hist.estado %></td>
+          <td><%= new Date(hist.fecha).toLocaleString() %></td>
+          <td><%= hist.observacion || '-' %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <% if (cita.estado.nombre === 'Pendiente') { %>
+      <form action="/citas/<%= cita._id %>?_method=DELETE" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Cancelar cita?')">Cancelar Cita</button>
+      </form>
+    <% } %>
+    <a href="/citas" class="btn btn-secondary">Volver</a>
+  </div>
+</div>
+
+<%- include('../partials/footer'); %>

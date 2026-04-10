@@ -1,0 +1,66 @@
+<%- include('partials/header'); %>
+<%- include('partials/navbar'); %>
+
+<div class="container main-content">
+  <h1>Dashboard</h1>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Citas</h3>
+      <p class="stat-value"><%= totalCitas %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Citas Hoy</h3>
+      <p class="stat-value"><%= citasHoy %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Pendientes</h3>
+      <p class="stat-value"><%= citasPendientes %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Propietarios</h3>
+      <p class="stat-value"><%= totalPropietarios %></p>
+    </div>
+    <div class="stat-card">
+      <h3>Vehículos</h3>
+      <p class="stat-value"><%= totalVehiculos %></p>
+    </div>
+  </div>
+  
+  <h2>Últimas Citas</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Vehículo</th>
+        <th>Trámite</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (ultimasCitas.length > 0) { %>
+        <% ultimasCitas.forEach(function(cita) { %>
+          <tr>
+            <td><%= new Date(cita.fecha).toLocaleDateString() %></td>
+            <td><%= cita.hora %></td>
+            <td><%= cita.vehiculo.placa %></td>
+            <td><%= cita.tramite.nombre %></td>
+            <td><span class="badge badge-<%= cita.estado.nombre.toLowerCase() %>"><%= cita.estado.nombre %></span></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="5" class="text-center">No hay citas registradas</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+  <div class="actions">
+    <a href="/citas/nueva" class="btn btn-primary">Nueva Cita</a>
+    <a href="/citas" class="btn btn-secondary">Ver Todas</a>
+  </div>
+</div>
+
+<%- include('partials/footer'); %>
